@@ -44,12 +44,12 @@ STRICT RULES:
 
 print("Sending context to Gemini for self-healing....")
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.6-flash",
     contents=prompt
 )
 
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.6-flash",
     contents=prompt
 )
 
