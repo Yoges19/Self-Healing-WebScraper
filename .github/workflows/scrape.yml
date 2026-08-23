@@ -27,7 +27,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requriements.txt
+          pip install -r requirements.txt
 
       - name: Run Web Scraper
         id: run_scraper
