@@ -20,7 +20,7 @@ except FileNotFoundError:
     sys.exit(0)
 
 #if there is a failure file that means we've to heal the scraper.py
-with open("scraper.py", "r", encoding="utf-8") as f:
+with open("src/scraper.py", "r", encoding="utf-8") as f:
     broken_code = f.read()
 
 
@@ -59,7 +59,7 @@ if fixed_code.endswith("```"):
 
 fixed_code = fixed_code.strip()
 
-with open("scraper.py", "w", encoding="utf-8") as f:
+with open("src/scraper.py", "w", encoding="utf-8") as f:
     f.write(fixed_code)
 
 print("Self-healing process complete. scraper.py updated succesfully")
