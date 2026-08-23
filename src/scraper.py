@@ -1,4 +1,3 @@
-
 import json
 import time
 import requests
@@ -25,7 +24,7 @@ params = {
 data = [
 	{
         "url":"https://www.glassdoor.co.in/index.htm",
-        "company_names":["Zoho","Amazon","FinSurge","google"]
+        "company_names":["Zoho","Amazon","FinSurge"]
     },
 ]
 
