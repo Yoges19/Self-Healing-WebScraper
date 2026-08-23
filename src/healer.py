@@ -35,7 +35,7 @@ ERROR / FAILURE CONTEXT
 {failure_log}
 
 TASK:
-Analyze the error and the code. Provide the fully corrected, functional version of `scrapper.py`.
+Analyze the error and the code. Provide the fully corrected, functional version of `scraper.py`.
 STRICT RULES:
 1. Return ONLY the raw Python code.
 2. Do NOT wrap the code in markdown codeblocks (do NOT include ```python or ```).
