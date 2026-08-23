@@ -4,8 +4,8 @@ import requests
 import sys
 import os
 
-if os.path.exists("src/failure_dump.txt"):
-    os.remove("src/failure_dump.txt")
+if os.path.exists("failure_dump.txt"):
+    os.remove("failure_dump.txt")
 
 trigger_url = "https://api.brightdata.com/dca/trigger"
 
@@ -57,7 +57,7 @@ for attempt in range(1, max_attempts + 1):
         print("\n--- Scraped Data Received Successfully ---")
         print(result_response.text)
 
-        with open("src/scraped_output.json", "w", encoding="utf-8") as f:
+        with open("scraped_output.json", "w", encoding="utf-8") as f:
             f.write(result_response.text)
         break
     elif result_response.status_code == 202:
@@ -86,14 +86,14 @@ try:
         raise ValueError("Scraped dataset is empty.")
 
     #we need to check essential feilds
-    requried_key = ["company_name", "rating_score"]
+    requried_key = ["company_name", "hackathon_broken_key"]
     for entry in data_list:
         for key in requried_key:
             if key not in entry or entry[key] is None:
                 raise KeyError(f"Missing essential data '{key}' in output")
     print(f"Validation passed: {len(data_list)} companies details scraped successfully.🥴")
 
-    with open("src/scraped_output.json", "w", encoding="utf-8") as f:
+    with open("scraped_output.json", "w", encoding="utf-8") as f:
         json.dump(data_list, f, indent=2)
     
     sys.exit(0)
@@ -102,7 +102,7 @@ try:
 except Exception as error:
     print(f"Validation / Scrapping error: {error}")
 
-    with open("src/failure_dump.txt", "w", encoding="utf-8") as f:
+    with open("failure_dump.txt", "w", encoding="utf-8") as f:
         f.write(f"Error Type: {type(error).__name__}\n")
         f.write(f"Error Details: {str(error)}\n")
         f.write(f"Response Snippet: {result_response.text[:500]}\n")
