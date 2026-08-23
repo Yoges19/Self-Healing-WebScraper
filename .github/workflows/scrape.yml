@@ -43,7 +43,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          echo "Scraper failed to scrape data! Let's call our Healer Gemini..."
+          echo "Scraper failed to scrape data! Let's call our Healer Gemini.."
           python src/healer.py
 
       - name: Commit & Push Healed Code
