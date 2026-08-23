@@ -1,0 +1,7 @@
+.env*
+
+src/failure_dump.txt
+
+src/scraped_output.json
+
+__pycache__/

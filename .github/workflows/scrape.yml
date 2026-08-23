@@ -1,0 +1,52 @@
+name: Self-Healing Scraper CI
+
+on:
+  schedule:
+    -cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+   contents: write
+
+jobs:
+  scrape-and-heal:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+        
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requriements.txt
+
+      - name: Run Web Scraper
+        id: run_scraper
+        continue-on-error: true
+        env:
+          BRIGHTDATA_API_TOKEN: ${{ secrets.BRIGHTDATA_API_TOKEN }}
+          BRIGHTDATA_COLLECTOR_ID: ${{ secrets.BRIGHTDATA_COLLECTOR_ID }}
+        run: |
+          python src/scraper.py
+
+      - name: Tigger AI Self Healer (on failure)
+        if: steps.run_scraper.outcome == 'failure'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "Scraper failed to scrape data! Let's call our Healer Gemini..."
+          python src/healer.py
+
+      - name: Commit & Push Healed Code
+        if: steps.run_scraper.outcome == 'failure'
+        run: |
+          echo "Code healed and committed. Tiggering re-run or exiting with review warning.."
+
+      
