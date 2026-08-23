@@ -11,7 +11,7 @@ if not api_key:
 client = genai.Client(api_key=api_key)
 
 try:
-    # It reads the failure_dump.txt file that we've created in the scraper.py
+    # It first reads the failure_dump.txt file that we've created in the scraper.py
 
     with open("failure_dump.txt", "r", encoding="utf-8") as f:
         failure_log = f.read()
