@@ -34,7 +34,7 @@ jobs:
           BRIGHTDATA_API_TOKEN: ${{ secrets.BRIGHTDATA_API_TOKEN }}
           BRIGHTDATA_COLLECTOR_ID: ${{ secrets.BRIGHTDATA_COLLECTOR_ID }}
         run: |
-          python src/scraper.py
+          python scraper.py
 
       - name: Tigger AI Self Healer (on failure)
         if: steps.run_scraper.outcome == 'failure'
@@ -42,7 +42,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           echo "Scraper failed to scrape data! Let's call our Healer Gemini..."
-          python src/healer.py
+          python healer.py
 
       - name: Commit & Push Healed Code
         if: steps.run_scraper.outcome == 'failure'
