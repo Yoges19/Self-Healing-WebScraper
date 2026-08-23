@@ -45,7 +45,12 @@ STRICT RULES:
 print("Sending context to Gemini for self-healing....")
 response = client.models.generate_content(
     model="gemin-2.5-flash",
-    content=prompt
+    contents=prompt
+)
+
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
 )
 
 fixed_code = response.text.strip()
