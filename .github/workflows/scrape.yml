@@ -41,14 +41,12 @@ jobs:
       - name: Tigger AI Self Healer (on failure)
         if: steps.run_scraper.outcome == 'failure'
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          echo "Scraper failed to scrape data! Let's call our Healer Gemini.."
+          echo "Scraper failed to scrape data! Let's call our Healer Groq.."
           python src/healer.py
 
       - name: Commit & Push Healed Code
         if: steps.run_scraper.outcome == 'failure'
         run: |
           echo "Code healed and committed. Tiggering re-run or exiting with review warning.."
-
-      

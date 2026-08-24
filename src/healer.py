@@ -1,14 +1,16 @@
 import os
 import sys
-from google import genai
+from groq import Groq
+from pathlib import Path
 
-api_key = os.getenv("GEMINI_API_KEY")
+
+api_key = os.getenv("GROQ_API_KEY")
 
 if not api_key:
-    print("Error: GEMINI_API_KEY env variable not found")
+    print("Error: GROQ_API_KEY env variable not found")
     sys.exit(1)
 
-client = genai.Client(api_key=api_key)
+client = Groq(api_key=api_key)
 
 try:
     # It first reads the failure_dump.txt file that we've created in the scraper.py
@@ -42,18 +44,29 @@ STRICT RULES:
 3. Do NOT add conversational text or explanations.
 """
 
-print("Sending context to Gemini for self-healing....")
-response = client.models.generate_content(
-    model="gemini-3.6-flash",
-    contents=prompt
+print("Sending context to Groq for self-healing....")
+response = client.chat.completions.create(
+    model="openai/gpt-oss-120b",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are an automated Python code repair bot. Return ONLY valid, executable Python code with no markdown formatting or extra text"
+        },
+        {
+            "role": "user",
+            "content": prompt,
+        }
+    ],
+    temperature=1,
+    max_completion_tokens=2048,
+    top_p=1,
+    reasoning_effort="medium",
+    stream=True,
+    stop=None
 )
 
-response = client.models.generate_content(
-    model="gemini-3.6-flash",
-    contents=prompt
-)
 
-fixed_code = response.text.strip()
+fixed_code = response.choice[0].message.content.strip()
 
 if fixed_code.startswith("```python"):
     fixed_code = fixed_code[9:]
@@ -64,7 +77,7 @@ if fixed_code.endswith("```"):
 
 fixed_code = fixed_code.strip()
 
-with open("src/scraper.py", "w", encoding="utf-8") as f:
-    f.write(fixed_code)
+scraper_file = Path(__file__).resolve().parent / "scraper.py"
+scraper_file.write_text(fixed_code, encoding="utf-8")
 
 print("Self-healing process complete. scraper.py updated succesfully")
