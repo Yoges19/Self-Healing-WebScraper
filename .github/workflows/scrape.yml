@@ -47,10 +47,10 @@ jobs:
           python src/healer.py
 
       - name: Commit & Push Healed Code
-            if: steps.run_scraper.outcome == 'failure'
-            run: |
-              git config --global user.name "github-actions[bot]"
-              git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-              git add src/scraper.py
-              git commit -m "fix(self-healing): auto-repaired scraper via Groq"
-              git push origin master
+        if: steps.run_scraper.outcome == 'failure'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/scraper.py
+          git commit -m "fix(self-healing): auto-repaired scraper via Groq"
+          git push origin master
