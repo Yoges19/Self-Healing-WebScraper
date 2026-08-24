@@ -84,7 +84,7 @@ try:
         raise ValueError("Scraped dataset is empty.")
 
     # Validate essential fields
-    required_keys = ["company_name"]
+    required_keys = ["company_name", "broken_key"]
     for entry in data_list:
         for key in required_keys:
             if key not in entry or entry[key] is None:
