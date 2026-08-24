@@ -18,4 +18,6 @@ Traditional web scrapers are fragile. Minor changes in website DOM structures, C
 ---
 
 ## 🏗️ Architecture & Workflow
+<img width="757" height="608" alt="working_flow" src="https://github.com/user-attachments/assets/ced36977-440d-42e7-9b5c-27cd5f5af61e" />
+
 
