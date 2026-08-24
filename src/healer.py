@@ -45,26 +45,20 @@ STRICT RULES:
 """
 
 print("Sending context to Groq for self-healing...")
-response = client.chat.completions.create(
-    model="openai/gpt-oss-120b",
+response =client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": "You are an automated Python code repair bot. Return ONLY valid, executable Python code with no markdown formatting or extra text"
+            "content": "You are an automated Python code repair bot. Return ONLY valid, executable Python code with no markdown formatting or extra text."
         },
         {
             "role": "user",
             "content": prompt,
         }
     ],
-    temperature=1,
-    max_completion_tokens=2048,
-    top_p=1,
-    reasoning_effort="medium",
-    stream=True,
-    stop=None
+    model="llama-3.3-70b-versatile",
+    temperature=0.1,
 )
-
 
 fixed_code = response.choice[0].message.content.strip()
 
