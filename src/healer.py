@@ -44,7 +44,7 @@ STRICT RULES:
 3. Do NOT add conversational text or explanations.
 """
 
-print("Sending context to Groq for self-healing....")
+print("Sending context to Groq for self-healing...")
 response = client.chat.completions.create(
     model="openai/gpt-oss-120b",
     messages=[
