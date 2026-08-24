@@ -60,7 +60,7 @@ response =client.chat.completions.create(
     temperature=0.1,
 )
 
-fixed_code = response.choice[0].message.content.strip()
+fixed_code = response.choices[0].message.content.strip()
 
 if fixed_code.startswith("```python"):
     fixed_code = fixed_code[9:]
