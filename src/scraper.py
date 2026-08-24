@@ -14,17 +14,16 @@ BRIGHTDATA_API_TOKEN = os.getenv("BRIGHTDATA_API_TOKEN")
 if not BRIGHTDATA_COLLECTOR_ID:
     raise RuntimeError("BRIGHTDATA_COLLECTOR_ID environment variable is not set")
 headers = {
-	"Authorization": f"Bearer {BRIGHTDATA_API_TOKEN}",
-	"Content-Type": "application/json",
+    "Authorization": f"Bearer {BRIGHTDATA_API_TOKEN}",
+    "Content-Type": "application/json",
 }
 params = {
-	"collector": BRIGHTDATA_COLLECTOR_ID,
-	#"queue_next": "1",
+    "collector": BRIGHTDATA_COLLECTOR_ID,
 }
 data = [
-	{
-        "url":"https://www.glassdoor.co.in/index.htm",
-        "company_names":["Zoho","Amazon","FinSurge"]
+    {
+        "url": "https://www.glassdoor.co.in/index.htm",
+        "company_names": ["Zoho", "Amazon", "FinSurge"]
     },
 ]
 
@@ -40,13 +39,12 @@ if not collection_id:
     print("Error: Could not retrieve collection_id.")
     sys.exit(1)
 
-
 print(f"\nCollector job initiated successfully. Collection ID: {collection_id}")
 print("Waiting for Bright Data to scrape the data...")
 
 result_url = f"https://api.brightdata.com/dca/dataset?id={collection_id}"
 
-max_attempts = 35  
+max_attempts = 35
 for attempt in range(1, max_attempts + 1):
     time.sleep(20)
     print(f"Checking job status (Attempt {attempt}/{max_attempts})...")
@@ -70,37 +68,37 @@ else:
 
 raw_text = result_response.text.strip()
 
-
 try:
-    # First we've to try parsing as json array
+    # Try parsing as a JSON array first
     try:
         data_list = json.loads(result_response.text)
         if not isinstance(data_list, list):
             data_list = [data_list]
     except json.JSONDecodeError:
-        #if that is fails, parse as json lines(line by line)
+        # Fallback: parse line‑by‑line JSON (JSON Lines)
         data_list = [
             json.loads(line) for line in raw_text.splitlines() if line.strip()
         ]
+
     if not data_list:
         raise ValueError("Scraped dataset is empty.")
 
-    #we need to check essential feilds
-    requried_key = ["company_name", "hackathon_broken_key"]
+    # Validate essential fields
+    required_keys = ["company_name"]
     for entry in data_list:
-        for key in requried_key:
+        for key in required_keys:
             if key not in entry or entry[key] is None:
                 raise KeyError(f"Missing essential data '{key}' in output")
+
     print(f"Validation passed: {len(data_list)} companies details scraped successfully.🥴")
 
     with open("scraped_output.json", "w", encoding="utf-8") as f:
         json.dump(data_list, f, indent=2)
-    
+
     sys.exit(0)
 
-
 except Exception as error:
-    print(f"Validation / Scrapping error: {error}")
+    print(f"Validation / Scraping error: {error}")
 
     with open("failure_dump.txt", "w", encoding="utf-8") as f:
         f.write(f"Error Type: {type(error).__name__}\n")
