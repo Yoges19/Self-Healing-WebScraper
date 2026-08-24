@@ -72,6 +72,9 @@ BRIGHTDATA_COLLECTOR_ID=your_collector_id
 BRIGHTDATA_API_TOKEN=your_brightdata_token
 GROQ_API_KEY=your_groq_api_key
 ```
+[Visit BRIGHTDATA](https://brightdata.com/cp/start)
+[Visit GROQ](https://console.groq.com/keys)
+
 
 ### 3. Install dependencies
 
